@@ -1,0 +1,25 @@
+
+#!/usr/bin/python
+#_*_ coding:utf-8 -*-
+uthor__ = 'openSouce'
+
+import os
+import sys
+from urllib.parse import quote
+import urllib.request
+import smtplib
+from email.mime.text import MIMEText
+
+import json
+
+
+class weather(object):
+
+    pm25_uri = "http://www.pm25.in/api/querys/pm2_5.json?city="
+
+
+    def mainHandle(self):
+        print("get the weather of you city：")
+        city_name = input()
+        print(city_name)
+"get_pm25.py" 60L, 1808C
