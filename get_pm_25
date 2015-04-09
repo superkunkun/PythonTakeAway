@@ -1,0 +1,60 @@
+#!/usr/bin/python
+#_*_ coding:utf-8 -*-
+uthor__ = 'openSouce'
+ 
+import os
+import sys
+from urllib.parse import quote
+import urllib.request
+import smtplib
+from email.mime.text import MIMEText
+
+import json
+
+ 
+class weather(object):
+   
+    pm25_uri = "http://www.pm25.in/api/querys/pm2_5.json?city="
+ 
+ 
+    def mainHandle(self):
+        print("get the weather of you city：")
+        city_name = input()
+        print(city_name)
+        pm25_uri_temp = self.pm25_uri + city_name + "&token=5j1znBVAsnSf5xQyNQyq&stations=no"
+        print (pm25_uri_temp)
+        data = json.loads(urllib.request.urlopen(pm25_uri_temp).read().decode("utf8"))
+        print (data)
+        if data:
+            ret_data = data[0]
+            output = "aqi :" + ret_data["area"] + "\r\n"
+            output += "time point:" + ret_data["time_point"] + " " + "\r\n"
+            output += "pm2.5:" + str(ret_data["pm2_5"])+ "\r\n"
+            output += "pm2.5 for 24h:" + str(ret_data["pm2_5_24h"]) + "\r\n"
+            output += "quality: " + ret_data["quality"]
+            print(output)
+            sender = 'mail@cisco.com'
+            receiver = ['mail@cisco.com']
+            subject = 'PM2.5 Result'
+          
+            username = 'mail'
+            password = 'xxxxxxxx'
+            msg = MIMEText(output,'plain','utf-8')
+            msg['subject'] = subject
+            smtp = smtplib.SMTP('mail.cisco.com')
+            smtp.connect('mail.cisco.com')
+           
+            #smtp.login(username, password)
+            smtp.sendmail(sender, receiver, msg.as_string())
+            print ("send mail success")
+            smtp.quit()
+            return True
+        else:
+            print(data['errMsg'])
+            return False
+
+
+ 
+if __name__ == "__main__":
+    weather = weather()
+    weather.mainHandle()
